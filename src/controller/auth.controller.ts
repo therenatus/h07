@@ -6,7 +6,6 @@ import {JwtService} from "../helpers/jwtService";
 import {AuthMiddleware} from "../middleware/auth.middleware";
 import {CheckCodeValidator} from "./validator/check-code.validator";
 import {FindCheckEmailValidator} from "./validator/find-check-email.validator";
-import { CheckEmailValidator} from './validator/check-email.validator';
 import {CreateUserValidator} from "./validator/create-user.validator";
 
 const router = express.Router();
@@ -41,7 +40,7 @@ router.get('/me', AuthMiddleware, async(req: Request, res: Response) => {
 })
 
 
-router.post('/registration', CreateUserValidator, CheckEmailValidator, InputValidationMiddleware, async(req: Request, res: Response) => {
+router.post('/registration', CreateUserValidator, InputValidationMiddleware, async(req: Request, res: Response) => {
   const mail = await service.registration(req.body);
   return res.status(204).send()
 })
