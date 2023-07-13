@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const blog_controller_1 = __importDefault(require("./blog.controller"));
+const post_controller_1 = __importDefault(require("./post.controller"));
+const blog_controller_spec_1 = __importDefault(require("./blog.controller.spec"));
+const user_controller_1 = __importDefault(require("./user.controller"));
+const comment_controller_1 = __importDefault(require("./comment.controller"));
+const basicAuth_middleware_1 = require("../middleware/basicAuth.middleware");
+const auth_controller_1 = __importDefault(require("./auth.controller"));
+const router = express_1.default.Router();
+router.use('/blogs', blog_controller_1.default);
+router.use('/posts', post_controller_1.default);
+router.use('/users', basicAuth_middleware_1.BasicAuthMiddleware, user_controller_1.default);
+router.use('/auth', auth_controller_1.default);
+router.use('/comments', comment_controller_1.default);
+router.use('/testing', blog_controller_spec_1.default);
+exports.default = router;
