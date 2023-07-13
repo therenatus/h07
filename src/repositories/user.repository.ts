@@ -18,7 +18,7 @@ export class UserRepository {
   }
 
   async getOne(search: string): Promise<UserDBType | null> {
-    return userCollection.findOne({$or: [{email: search}, {login: search}]});
+    return userCollection.findOne({$or: [{'accountData.email': search}, {'accountData.login': search}]});
   }
 
   async getOneByCode(code: string): Promise<UserDBType | null> {
