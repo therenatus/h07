@@ -4,9 +4,10 @@ import {LoginValidator} from "./validator/login.validator";
 import {InputValidationMiddleware} from "../middleware/inputValidationMiddleware";
 import {JwtService} from "../helpers/jwtService";
 import {AuthMiddleware} from "../middleware/auth.middleware";
-import {StatusEnum} from "../types/status.enum";
 import {CheckCodeValidator} from "./validator/check-code.validator";
-import {CheckEmailValidator} from "./validator/check-email.validator";
+import {FindCheckEmailValidator} from "./validator/find-check-email.validator";
+import { CheckEmailValidator} from './validator/check-email.validator';
+import {CreateUserValidator} from "./validator/create-user.validator";
 
 const router = express.Router();
 const service = new AuthService();
@@ -40,9 +41,9 @@ router.get('/me', AuthMiddleware, async(req: Request, res: Response) => {
 })
 
 
-router.post('/registration', async(req: Request, res: Response) => {
+router.post('/registration', CreateUserValidator, CheckEmailValidator, InputValidationMiddleware, async(req: Request, res: Response) => {
   const mail = await service.registration(req.body);
-  return res.status(200).send(mail)
+  return res.status(204).send()
 })
 
 router.post('/registration-confirmation', CheckCodeValidator, InputValidationMiddleware, async(req: Request, res: Response) => {
@@ -54,7 +55,7 @@ router.post('/registration-confirmation', CheckCodeValidator, InputValidationMid
 })
 
 
-router.post('/registration-email-resending',CheckEmailValidator, InputValidationMiddleware, async(req: Request, res: Response) => {
+router.post('/registration-email-resending', FindCheckEmailValidator, InputValidationMiddleware, async(req: Request, res: Response) => {
   const isConfirm = service.resendEmail(req.body.email);
   if(!isConfirm){
     return res.status(400).send()
