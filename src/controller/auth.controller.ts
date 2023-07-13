@@ -59,6 +59,6 @@ router.post('/registration-email-resending', FindCheckEmailValidator, InputValid
   if(!isConfirm){
     return res.status(400).send()
   }
-  return res.status(204).send();
+  res.status(204).send();
 })
 export default router;

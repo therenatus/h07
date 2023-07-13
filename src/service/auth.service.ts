@@ -60,6 +60,9 @@ export class AuthService {
 
   async resendEmail(email: string) {
     const user = await Repository.getOneByEmail(email);
+    if(!user){
+      return null
+    }
     await emailManager.sendConfirmMessages(user!);
   }
 
