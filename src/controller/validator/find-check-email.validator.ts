@@ -5,8 +5,11 @@ const urlPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const FindCheckEmailValidator = [
   body('email').trim().isString().matches(urlPattern).custom(async(email) => {
     const user = await userCollection.findOne({'accountData.email': email});
-    if(!user || user.emailConfirmation.isConfirmed) {
-      throw new Error('Email not found');
+    if(!user) {
+      throw new Error('User not found');
+    }
+    if(user.emailConfirmation.isConfirmed){
+      throw new Error('User is confirmed');
     }
     return true;
   })

@@ -4,8 +4,11 @@ import { userCollection} from "../../index";
 export const CheckCodeValidator = [
   body('code').trim().isString().custom(async(code) => {
     const user = await userCollection.findOne({'emailConfirmation.confirmationCode': code});
-    if(!user || user.emailConfirmation.isConfirmed) {
-      throw new Error('Code not found');
+    if(!user) {
+      throw new Error('User not found');
+    }
+    if(user.emailConfirmation.isConfirmed){
+      throw new Error('User is confirmed');
     }
     return true;
   })
