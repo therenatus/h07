@@ -14,7 +14,6 @@ export const AuthMiddleware = async(req: Request, res: Response, next: NextFunct
     return res.status(401).send("Forbidden");
   }
   const userId = await jwtService.getUserByToken(token);
-  console.log(userId)
   if(!userId){
     return res.status(401).send("Forbidden");
   }

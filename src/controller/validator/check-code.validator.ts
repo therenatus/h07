@@ -10,6 +10,9 @@ export const CheckCodeValidator = [
     if(user.emailConfirmation.isConfirmed){
       throw new Error('User is confirmed');
     }
+    if(user.emailConfirmation.expirationDate < new Date()){
+      throw new Error('Link is expired');
+    }
     return true;
   })
 ];
