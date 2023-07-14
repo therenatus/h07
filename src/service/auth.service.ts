@@ -60,9 +60,11 @@ export class AuthService {
 
   async resendEmail(email: string) {
     const user = await Repository.getOneByEmail(email);
+    const code = uuidv4();
     if(!user){
       return null
     }
+    await Repository.updateCode(user.accountData.id, code);
     await emailManager.sendConfirmMessages(user!);
   }
 

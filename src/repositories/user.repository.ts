@@ -56,8 +56,17 @@ export class UserRepository {
   async confirmUser(id: string): Promise<boolean> {
     const { matchedCount } = await userCollection.updateOne({'accountData.id': id}, {$set : {'emailConfirmation.isConfirmed': true}});
     if(matchedCount === 0){
-      return false
+      return false;
     }
-    return true
+    return true;
   }
+
+  async updateCode(id: string, code: string): Promise<boolean> {
+    const { matchedCount } = await userCollection.updateOne({'accountData.id': id}, {$set : {'emailConfirmation.confirmationCode': code}});
+    if(matchedCount === 0){
+      return false;
+    }
+    return true;
+  }
+
 }
