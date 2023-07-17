@@ -65,7 +65,8 @@ export class AuthService {
       return null
     }
     await Repository.updateCode(user.accountData.id, code);
-    await emailManager.sendConfirmMessages(user!);
+    const userWithNewCode = await Repository.getOneByEmail(email);
+    await emailManager.sendConfirmMessages(userWithNewCode!);
   }
 
   async confirmUser(code: string) {
